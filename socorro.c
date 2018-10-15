@@ -4,8 +4,8 @@
 
 int main()
 {
-	int i,j;
-	char palavra[26],  aux[26], aux2[26], sep[20][2], x[] = "X";
+	int i,j,k,n;
+	char palavra[26],  aux[26], aux2[26], sep[40][2], x[1] = "X";
 	scanf("%s", palavra);
 	for(i=0;i<strlen(palavra); i=i+2)
 	{
@@ -25,13 +25,18 @@ int main()
 				strcat(aux, x);
 		}
 	}
-//	for(i=0;i!='\0';i++)
-//	{
-//		for(j=0;j<2;j++)
-//		{
-//			sep[i][j] = aux[i];
-//			printf("%s", sep[i][j]);
-//		}
-//		printf("\n");
-//	}
+	printf("\n%s",aux);
+	n=strlen(aux);
+	printf("\n%d",n);
+	k=0;
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<2;j++,k++)
+		{
+
+			sep[i][j] = aux[k];
+			printf("%s", sep[i][j]);
+		}
+		printf("\n");
+	}
 }

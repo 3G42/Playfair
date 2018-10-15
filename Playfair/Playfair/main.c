@@ -3,20 +3,93 @@
 #include <conio2.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 //clrscr(); apaga tudo
+void interface(char matriz[][5],int flag,int flag2, int flag3, int flag4,char matriz_cript[50][2],char palavra[50],int tamanhoVet,int con3);
 void preenche_palavra(char frase[]);
 void preenche_chave(char frase[],char aux[]);
 void mat(char matriz[][5], char chave[]);
 void excluir_casa(char palavra[], int tamanho_string, int posicao);
 void adicionar_casa(char palavra[], int tamanho_string, int posicao);
-void frase_agrupada(char frase[],char matriz[50][2]);
+int frase_agrupada(char frase[],char matriz[50][2]);
 void criptografa(char matriz[50][2],char chave[5][5],char vet[]);
+void limpa_tudo(char palavra[] ,char chave[], char matriz[][5],char aux[],char matriz_cript[][2]);
+
 int main()
 {
-	int i, n=1,j, cont=1, flag=0, flag2=0,k=17,tamanhovet;
+	int i, n=1,j, cont=1, flag=0,flag2 = 0,flag3 = 0,flag4=0, k=17,tamanhovet, x, con, con2, con3=0;
 	char palavra[26], chave[40], matriz[5][5],aux[40],matriz_cript[50][2];
-	textcolor(YELLOW);
+	interface(matriz,flag, flag2, flag3, flag4, matriz_cript, palavra,tamanhovet,con3);
+        while(n!=0)
+    {
+    	system("cls");
+    	interface(matriz,flag , flag2, flag3, flag4, matriz_cript, palavra,tamanhovet,con3);
+        gotoxy(8,12);
+        textcolor(BLUE);
+        scanf("%d", &n);
+        flag=0;
+        flag2=0;
+        flag3=0;
+        flag4=0;
+
+        switch(n)
+        {
+            case 1:
+                gotoxy(8,13);
+                preenche_palavra(palavra);
+                gotoxy(27,12);
+                x=frase_agrupada(palavra,matriz_cript);
+                flag=1;
+                con=1;
+                break;
+
+            case 2:
+                gotoxy(8,14);
+                preenche_chave(chave,aux);
+                mat(matriz,aux);
+                flag2=1;
+                con2=1;
+                break;
+            case 3:
+                if(con==1 && con2==1)
+                {
+                    criptografa(matriz_cript,matriz,palavra);
+                    tamanhovet=x/2;
+                    flag2=1;
+                    flag3=1;
+                    con3=1;
+                }
+                else
+                {
+                    flag3=1;
+                    con3=0;
+                }
+                break;
+            case 5:
+                x=1;
+                break;
+            case 6:
+                return 0;
+                break;
+            default:
+                gotoxy(28, 12);
+                printf("Digite uma opção válida");
+
+
+
+            }
+    }
+	textcolor(BLACK);
+	gotoxy(25,40);
+	system("pause");
+	return 0;
+}
+
+void interface(char matriz[][5],int flag,int flag2, int flag3, int flag4,char matriz_cript[50][2],char palavra[50],int tamanhoVet,int con3)
+{
+    int i, j, k=17;
+    textcolor(YELLOW);
 	textbackground(RED);
 	gotoxy(1,1);
 	printf("\xC9");
@@ -48,11 +121,10 @@ int main()
 	printf("STATUS: ");
 	printf("\nFrase: ");
 	printf("\nChave: ");
-	printf("\nResultado: ");
 	printf("                       ");
 	textbackground(RED);
 	textcolor(YELLOW);
-	gotoxy(35,15);
+	gotoxy(34,15);
 	printf("M A T R I Z");
 	gotoxy(76,15);
 	textbackground(BLACK);
@@ -73,60 +145,49 @@ int main()
 		printf("\xC4");
 	}
 	printf("\xD9");
-	while(n!=0)
-    {
-        gotoxy(8,12);
-        textcolor(BLUE);
-        scanf("%d", &n);
+	textcolor(WHITE);
+	printf("\n\nResultado: ");
+	textcolor(YELLOW);
+	gotoxy(35,17);
+	if(flag==1)
+	{
+		gotoxy(28, 12);
+		printf("Palavra a ser criptografada inserida");
+	}
+	if(flag2 ==1)
+	{
+	    for(i=0;i<5;i++)
+	    {
+	        for(j=0;j<5;j++)
+	            {
+	                printf("%c ",matriz[i][j]);
+	            }
+	            k++;
+	            gotoxy(35,k);
 
-        switch(n)
-        {
-            case 1:
-                gotoxy(8,13);
-                preenche_palavra(palavra);
-                flag++;
-                gotoxy(27,12);
-                printf("Frase a ser criptografada foi inserida");
-                gotoxy(30,30);
-                frase_agrupada(palavra,matriz_cript);
-                break;
-
-            case 2:
-                gotoxy(8,14);
-                preenche_chave(chave,aux);
-                flag2++;
-                mat(matriz,aux);
-                gotoxy(35,17);
-                for(i=0;i<5;i++)
-                {
-                    for(j=0;j<5;j++)
-                    {
-                        printf("%c ",matriz[i][j]);
-                    }
-                    k++;
-                    gotoxy(35,k);
-                }
-                break;
-            case 3:
-                gotoxy(11,15);
-                criptografa(matriz_cript,matriz,palavra);
-                tamanhovet=strlen(aux)/2;
-                for(i=0;i<tamanhovet;i++)
+	    }
+	    gotoxy(28, 12);
+		printf("Chave inserida");
+	}
+	if(flag3==1&&con3==1)
+	{
+		gotoxy(13,24);
+		 for(i=0;i<tamanhoVet;i++)
                 {
                     for(j=0;j<2;j++)
                     {
                         printf("%c ",matriz_cript[i][j]);
                     }
                 }
-                break;
+	}
+	else if (flag3==1&&con3==0)
+    {
+        gotoxy(28,12);
+        printf("Informe a palvara e/ou frase");
 
-            }
     }
-	textcolor(BLACK);
-	gotoxy(25,40);
-	system("pause");
-	return 0;
 }
+
 void preenche_palavra(char frase[])
 {
     int i, j, k, tamanho_string;
@@ -198,7 +259,7 @@ void preenche_chave(char chave[],char aux[])
     }
     aux[num] = '\0';
 	gotoxy(27,12);
-    printf("Chave inserida, matriz dde criptografia pronta.",chave,aux);
+    printf("Chave inserida, matriz de criptografia pronta.",chave,aux);
 }
 
 void mat(char matriz[5][5], char chave[])
@@ -264,9 +325,9 @@ void adicionar_casa(char palavra[], int tamanho_string, int posicao)
 		palavra[i+1] = palavra[i];
 	palavra[posicao] = 'X';
 }
-void frase_agrupada(char frase[],char matriz[50][2])
+int frase_agrupada(char frase[],char matriz[50][2])
 {
-    int i,j,k,n;
+    int i,j,k,n, cont;
     n = strlen(frase);
     for(i=0,k=0;i<n && frase[k]>=65 && frase[k]<=90;i++)
     {
@@ -276,6 +337,7 @@ void frase_agrupada(char frase[],char matriz[50][2])
             k++;
         }
     }
+    return n;
 }
 
 void criptografa(char matriz[50][2],char chave[5][5],char vet[])
@@ -362,4 +424,8 @@ void criptografa(char matriz[50][2],char chave[5][5],char vet[])
 
 
     }
+}
+void limpa_tudo(char palavra[],char chave[],char matriz[][5],char aux[], char matriz_cript[][2])
+{2
+
 }
